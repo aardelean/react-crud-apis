@@ -1,0 +1,79 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresdb
+    spec:
+      containers:
+      - name: postgresdb
+        image: postgres
+        ports:
+        - name: postgres-port
+          containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value:  password
+        - name:  POSTGRES_USERNAME
+          value:  postgres
+        - name:  POSTGRES_DB
+          value:  react
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  ports:
+  - port: 5432
+    targetPort: postgres-port
+    protocol: TCP
+  selector:
+    app:  postgresdb
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: crud-apis-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: crud-apis-backend
+    spec:
+      containers:
+      - name: crud-apis-backend
+        image: gcr.io/spring-boot-demo-168110/crud-apis:1.0
+        ports:
+        - name: backend-port
+          containerPort: 8080
+        env:
+        - name: DATABASE_USERNAME
+          value:  postgres
+        - name: DATABASE_PASSWORD
+          value:  password
+        - name: DATABASE_HOST
+          value:  postgres-service
+        - name: DATABASE_PORT
+          value:  "5432"
+        - name: DATABASE_NAME
+          value:  react
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crud-apis-service
+spec:
+  ports:
+  - port: 8080
+    targetPort: backend-port
+    protocol: TCP
+  selector:
+    app:  crud-apis-backend
+  type: LoadBalancer
