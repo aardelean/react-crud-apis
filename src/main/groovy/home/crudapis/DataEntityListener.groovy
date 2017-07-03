@@ -1,25 +1,28 @@
-package home.crudapis.person
+package home.crudapis
 
+import home.crudapis.comment.Comment
 import home.crudapis.message.MessageDispatcher
+import home.crudapis.person.Person
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.rest.core.annotation.HandleAfterCreate
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate
-import org.springframework.data.rest.core.annotation.HandleBeforeSave
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler
-import org.springframework.data.rest.core.event.AbstractRepositoryEventListener
-import org.springframework.messaging.simp.SimpMessagingTemplate
-import org.springframework.messaging.simp.broker.SimpleBrokerMessageHandler
 import org.springframework.stereotype.Component
 
 @Component
 @RepositoryEventHandler()
-class PersonEntityListener {
+class DataEntityListener {
 
     @Autowired
     MessageDispatcher messageDispatcher
 
-    @HandleBeforeSave(Person)
-    @HandleBeforeCreate(Person)
-    void onAfterSave(Person entity) {
+    @HandleAfterCreate(Person)
+    void onAfterCreatePerson(Person entity) {
         messageDispatcher.greeting entity
+    }
+
+    @HandleAfterCreate(Comment)
+    void onAfterCreateComment(Comment entity) {
+        messageDispatcher.pushComment entity
     }
 }

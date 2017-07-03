@@ -1,5 +1,6 @@
 package home.crudapis.message
 
+import home.crudapis.comment.Comment
 import home.crudapis.person.Person
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.simp.SimpMessagingTemplate
@@ -11,8 +12,8 @@ class MessageDispatcher {
     @Autowired
     private SimpMessagingTemplate template
 
-    void greeting(Person person) throws Exception {
-        template.convertAndSend("/topic/greetings",
-            new Greeting("Say hello to our newest member, " + person.toString() + "!"))
+    void pushComment(Comment comment) throws Exception {
+        template.convertAndSend("/topic/comments",
+                comment)
     }
 }
