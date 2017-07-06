@@ -1,0 +1,11 @@
+<b>Use this locally: </b>
+
+1) Database setup:
+docker run -p 5432:5432 --name postgres-react -e POSTGRES_PASSWORD=password -e POSTGRES_USERNAME=postgres -e POSTGRES_DB=react -d postgres
+
+2) Start project:
+With gradle: ./gradlew bootRun
+<b>OR</b> With docker: docker run -d -p 9000:9000 --link postgres-react:postgres -e DATABASE_USERNAME=postgres -e DATABASE_PASSWORD=password -e DATABASE_HOST=postgres -e DATABASE_PORT=5432 -e DATABASE_NAME=react aardelean/appdirect-react-apis:1.0
+3) Navigate to http://localhost:9000 and http://localhost:9000/api/
+
+
