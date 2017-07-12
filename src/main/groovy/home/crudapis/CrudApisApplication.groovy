@@ -24,6 +24,6 @@ class CrudApisApplication {
 				config.setBasePath "/api"
 				config.getResourceMappingForDomainType Person
 			}
-		};
+		}
 	}
 }
