@@ -12,3 +12,15 @@ spec:
     - ReadWriteMany
   hostPath:
     path: "/var/lib/postgresql/db-data"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi

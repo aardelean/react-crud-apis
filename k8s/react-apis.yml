@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
       - name: crud-apis-backend
-        image: aardelean/appdirect-react-apis:1.0
+        image: aardelean/appdirect-react-apis:1.1
         ports:
         - name: backend-port
           containerPort: 9000
